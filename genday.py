@@ -23,9 +23,11 @@
 
 import calendar
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 
 ##### Constants #####
@@ -73,17 +75,33 @@ LATEXINNER = r"""
 
 ##### Begin functioning code #####
 
-YEAR = raw_input("What year would you like to create a calendar for? ")
-try:
-    YEAR = int(YEAR)
-except ValueError:
-    print "You need to type an integer, like 2015."
+def usage_msg():
+    print "Monthly LaTeX calendar"
+    print "Copyright (c) 2015 Soren Bjornstad."
+    print "MIT license; see source for details."
+    print ""
+    print "Usage: genday year [OUTPUT_FILENAME]"
+    print "If an output filename is omitted, the calendar will be created"
+    print "in a temporary folder and opened directly in your PDF viewer."
+
+# parse arguments
+if not 2 <= len(sys.argv) <= 3:
+    usage_msg()
     sys.exit(1)
+try:
+    year = int(sys.argv[1])
+except ValueError:
+    usage_msg()
+    sys.exit(1)
+if len(sys.argv) == 3:
+    target = sys.argv[2]
+else:
+    target = None
 
-
+# build LaTeX code
 monthTables = []
 for month in range(1,13):
-    startday, largestDay = calendar.monthrange(YEAR, month)
+    startday, largestDay = calendar.monthrange(year, month)
     blanks = startday + 1 # in startday, 0 = Monday
     blanks = 0 if blanks == 7 else blanks
 
@@ -157,7 +175,7 @@ tfile = os.path.join(tdir, '.'.join([fnamebase, 'tex']))
 with open(tfile, 'wb') as f:
     f.write(LATEXHEADER)
     for i in range(len(monthTables)):
-        monthStr = THE_MONTHS[i] + " " + str(YEAR)
+        monthStr = THE_MONTHS[i] + " " + str(year)
         f.write(LATEXINNER % (monthStr, monthTables[i], monthStr))
     f.write(LATEXFOOTER)
 r = subprocess.call(['pdflatex', tfile])
@@ -166,13 +184,20 @@ if r:
     sys.exit(2)
 
 ofile = os.path.join(tdir, '.'.join([fnamebase, 'pdf']))
-if sys.platform.startswith('linux'):
-    subprocess.call(["xdg-open", ofile])
-elif sys.platform == "darwin":
-    os.system("open %s" % ofile)
-elif sys.platform == "win32":
-    os.startfile(ofile)
+
+if target is None:
+    if sys.platform.startswith('linux'):
+        subprocess.call(["xdg-open", ofile])
+    elif sys.platform == "darwin":
+        os.system("open %s" % ofile)
+    elif sys.platform == "win32":
+        os.startfile(ofile)
+    else:
+        print ("Unable to automatically open the output. Please"
+               "browse manually to %s." % ofile)
+    os.chdir(oldcwd)
+    time.sleep(1) # give time for PDF viewer to open file
+    shutil.rmtree(tdir, True)
 else:
-    termdisplay.warn("Unable to automatically open the output. Please" \
-            "browse manually to %s." % ofile)
-os.chdir(oldcwd)
+    shutil.copy(ofile, target)
+    shutil.rmtree(tdir, True)
