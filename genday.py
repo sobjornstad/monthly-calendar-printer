@@ -72,18 +72,17 @@ LATEXINNER = r"""
 \clearpage
 """
 
-
-##### Begin functioning code #####
-
 def usage_msg():
-    print "Monthly LaTeX calendar"
-    print "Copyright (c) 2015 Soren Bjornstad."
-    print "MIT license; see source for details."
-    print ""
-    print "Usage: genday year [OUTPUT_FILENAME]"
-    print "If an output filename is omitted, the calendar will be created"
-    print "in a temporary folder and opened directly in your PDF viewer."
+    print("""Monthly LaTeX calendar
+Copyright (c) 2015, 2018 Soren Bjornstad.
+MIT license; see source for details.
 
+Usage: genday YEAR [OUTPUT FILENAME]
+If an output filename is omitted, the calendar will be created in a
+temporary folder and opened directly in your PDF viewer.""")
+
+
+##### Begin main code #####
 # parse arguments
 if not 2 <= len(sys.argv) <= 3:
     usage_msg()
@@ -132,7 +131,7 @@ for month in range(1,13):
             clineIsAdded = True
 
         # Now output this day (or potentially more).
-        if (i == largestDay):
+        if i == largestDay:
             # We've reached the end of the calendar; pad out with &.
             days.append(r"\cday{%i} " % i)
             left = 7 - ((i + blanks) % 7)
@@ -172,7 +171,7 @@ os.chdir(tdir)
 
 fnamebase = "index"
 tfile = os.path.join(tdir, '.'.join([fnamebase, 'tex']))
-with open(tfile, 'wb') as f:
+with open(tfile, 'w') as f:
     f.write(LATEXHEADER)
     for i in range(len(monthTables)):
         monthStr = THE_MONTHS[i] + " " + str(year)
@@ -193,8 +192,8 @@ if target is None:
     elif sys.platform == "win32":
         os.startfile(ofile)
     else:
-        print ("Unable to automatically open the output. Please"
-               "browse manually to %s." % ofile)
+        print("Unable to automatically open the output. Please"
+              "browse manually to %s." % ofile)
     os.chdir(oldcwd)
     time.sleep(1) # give time for PDF viewer to open file
     shutil.rmtree(tdir, True)
