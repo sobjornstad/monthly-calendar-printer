@@ -6,7 +6,7 @@ for printing and posting on your fridge, bulletin board, or desk.
 Requirements & Dependencies
 ===========================
 
-* Python 2.7 series
+* Python 2.7+ or 3
 * Some distribution of LaTeX, and the packages geometry, mathpazo, microtype,
   and tabularx.
 * Some kind of PDF viewer; the script will try to open the PDF in whatever
@@ -17,7 +17,7 @@ Requirements & Dependencies
 Running
 =======
 
-Usage is `python genday.py YEAR [OUTPUT_FILENAME]`. The year should be an integer such as `2015`. The output filename is optional; if omitted, your PDF viewer will be opened on a temporary file so you can print and then discard it.
+Usage is `python genday.py YEAR [OUTPUT FILENAME]`. The year should be an integer such as `2015`. The output filename is optional; if omitted, your PDF viewer will be opened on a temporary file so you can print and then discard it.
 
 
 Problems? Bugs?
