@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Monthly LaTeX calendar - Print simple blank monthly calendars using LaTeX
 # Copyright (c) 2015 Soren Bjornstad.
