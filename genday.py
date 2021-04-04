@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Monthly LaTeX calendar - Print simple blank monthly calendars using LaTeX
-# Copyright (c) 2015 Soren Bjornstad.
+# Copyright (c) 2015, 2018, 2021 Soren Bjornstad.
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -75,10 +74,10 @@ LATEXINNER = r"""
 
 def usage_msg():
     print("""Monthly LaTeX calendar
-Copyright (c) 2015, 2018 Soren Bjornstad.
+Copyright (c) 2015, 2018, 2021 Soren Bjornstad.
 MIT license; see source for details.
 
-Usage: genday YEAR [OUTPUT FILENAME]
+Usage: genday YEAR [OUTPUT_FILENAME]
 If an output filename is omitted, the calendar will be created in a
 temporary folder and opened directly in your PDF viewer.""")
 
