@@ -196,7 +196,7 @@ if target is None:
         print("Unable to automatically open the output. Please"
               "browse manually to %s." % ofile)
     os.chdir(oldcwd)
-    time.sleep(1) # give time for PDF viewer to open file
+    time.sleep(5) # give time for PDF viewer to open file
     shutil.rmtree(tdir, True)
 else:
     shutil.copy(ofile, target)
