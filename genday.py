@@ -23,6 +23,7 @@
 
 import calendar
 import os
+from pathlib import Path
 import shutil
 import subprocess
 import sys
@@ -93,7 +94,7 @@ except ValueError:
     usage_msg()
     sys.exit(1)
 if len(sys.argv) == 3:
-    target = sys.argv[2]
+    target = Path(sys.argv[2]).resolve()
 else:
     target = None
 
